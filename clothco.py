@@ -19,11 +19,13 @@ problem = LpProblem("clothco", LpMaximize)
 
 # Variables for the number of items
 v_items = LpVariable.dicts("num_items", list(range(num_items)), 0, cat=LpInteger)
+
 # Variables for machine rent use, binary on/off switch
 v_supp = LpVariable.dicts("machine_rent", list(range(len(item_list), 2 * len(item_list) + 1)), 0, 1, cat=LpInteger)
 
 # Add the dictionaries together.
-v = {**v_items, **v_supp}
+v_items.update(v_supp)
+v = v_items
 
 # Constraints
 c1 = lpSum(labour_list[i] * v[i] for i in range(num_items)) <= labour_max
@@ -48,10 +50,10 @@ print(problem)
 # solving
 problem.solve()
 
-for i in range(3):
-    print(f"ClothCo should make {v[i].varValue} {item_list[i]}")
+# for i in range(3):
+    # print(f"ClothCo should make {v[i].varValue} amount of {item_list[i]}")
 
 obj = sum(profit_list[i] * v[i].varValue for i in range(num_items)) \
             - sum(machine_cost_list[j-num_items] * v[j].varValue for j in range(3,6))
 
-print(f"The profit will be ${obj}")
+# print(f"The profit will be ${obj}")
