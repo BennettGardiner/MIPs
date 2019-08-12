@@ -1,9 +1,14 @@
-bricks = ['a1', 'a2', 'a3', 'b1', 'b2',
+# This takes about 30 seconds to run.
+
+bricks = ['a1', 'a2', 'a3',
+          'b1', 'b2',
           'c1', 'c2', 'c3', 'c4',
-          'd1', 'd2', 'e1']
+          'd1', 'd2', 'd3',
+          'e1', 'e2', 'e3',
+          'f1']
 
 XSIZE = 4
-YSIZE = 3
+YSIZE = 4
 positions = [(x,y) for x in range(XSIZE) for y in range(YSIZE)]
 
 from pulp import *
@@ -48,7 +53,8 @@ pairs = [('a1', 'a2'), ('a1', 'a3'), ('a2', 'a3'),
      ('b1', 'b2'),
      ('c1', 'c2'), ('c1', 'c3'), ('c2', 'c3'),
      ('c1', 'c4'), ('c2', 'c4'), ('c3', 'c4'),
-     ('d1', 'd2')
+     ('d1', 'd2'), ('d1', 'd3'), ('d2', 'd3'),
+     ('e1', 'e2'), ('e1', 'e3'), ('e2', 'e3'),
     ]
 
 for b1, b2 in pairs:
@@ -70,3 +76,5 @@ for y in range(YSIZE):
                     row += '{}[{}]'.format(b, rb)
         row += '\t'
     print(row)
+
+print(m.objective.value())
