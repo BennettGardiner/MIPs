@@ -50,10 +50,10 @@ print(problem)
 # solving
 problem.solve()
 
-# for i in range(3):
-    # print(f"ClothCo should make {v[i].varValue} amount of {item_list[i]}")
+for i in range(3):
+    print(f"ClothCo should make {v[i].varValue} amount of {item_list[i]}")
 
 obj = sum(profit_list[i] * v[i].varValue for i in range(num_items)) \
             - sum(machine_cost_list[j-num_items] * v[j].varValue for j in range(3,6))
 
-# print(f"The profit will be ${obj}")
+print(f"The profit will be ${obj}")
