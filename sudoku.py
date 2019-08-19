@@ -4,7 +4,7 @@ from pulp import *
 import math
 
 # Problem specifics
-n = 9 # This is an nxn sudoku, n must be a square number
+n = 4 # This is an nxn sudoku, n must be a square number
 problem = LpProblem("sudoku",LpMaximize)
 
 # Decision variables
@@ -36,28 +36,10 @@ for j in range(int(math.sqrt(n))):
                         for col in range(int(math.sqrt(n)*k)+1, int(math.sqrt(n)*k) + int(math.sqrt(n))+1)]) == 1
 
 # Pre-assignments
-problem += v[2,2,2] == 1
-problem += v[2,3,4] == 1
-problem += v[1,4,1] == 1
-problem += v[2,5,5] == 1
-problem += v[3,5,8] == 1
-problem += v[3,7,3] == 1
-problem += v[3,8,7] == 1
-problem += v[3,9,5] == 1
-problem += v[4,1,9] == 1
-problem += v[5,2,7] == 1
-problem += v[6,3,2] == 1
-problem += v[4,7,4] == 1
-problem += v[5,8,3] == 1
-problem += v[6,9,8] == 1
-problem += v[7,1,1] == 1
-problem += v[7,2,5] == 1
-problem += v[7,3,8] == 1
-problem += v[7,5,9] == 1
-problem += v[8,5,6] == 1
-problem += v[9,6,3] == 1
-problem += v[8,7,9] == 1
-problem += v[8,8,1] == 1
+problem += v[1,1,1] == 1
+problem += v[2,4,4] == 1
+problem += v[3,3,2] == 1
+problem += v[4,2,3] == 1
 
 # Objective
 
