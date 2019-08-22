@@ -1,6 +1,9 @@
 # Imagine that you work for a company that builds computers.
 # A computer is a fairly complex product, and there are several factories that assemble them which the company pays a certain amount per unit.
-# The cost of this computer model on the market is fixed at 500$, different factories assemble the computers at different speeds and costs. Factory f0 produces 2000 per day at 450$ per unit, factory f1 1500 per day at 420$ per unit and f2 1000 per day at 400$ per unit. We have 1 month to assemble 80 000 units under the constraint that no factory is to produce more than double the units than any other factory. The question is, what is the optimal production allocation between the factories such # that we maximize the profit obtained from selling the computers under those constraints?
+# The cost of this computer model on the market is fixed at 500$, different factories assemble the computers at different speeds and costs. 
+# Factory f0 produces 2000 per day at 450$ per unit, factory f1 1500 per day at 420$ per unit and f2 1000 per day at 400$ per unit. 
+# We have 1 month to assemble 80 000 units under the constraint that no factory is to produce more than double the units than any other factory. 
+# The question is, what is the optimal production allocation between the factories such # that we maximize the profit obtained from selling the computers under those constraints?
 
 from pulp import *
 
