@@ -1,6 +1,6 @@
  # A script to solve the tables and chairs problem using Linear Programming.
 
-# The problem is as follows - there is a grid of (originally) 8 rows and 18 columns,
+# The problem is as follows - there is a grid of (originally) 7 rows and 18 columns,
 # each cell can contain a maximum of one object:
 #       - a table
 #       - a chair
@@ -12,7 +12,7 @@
 from pulp import *
 
 # Problem specifics and setup
-num_rows = 17
+num_rows = 7
 num_cols = 18
 TABLES_TOUCH_DIAG = False
 
@@ -100,6 +100,7 @@ for row in range(num_rows):
             data_mat[row,col] = 3
 
 print(data_mat)
+
 # create discrete colormap
 cmap = colors.ListedColormap(['white', 'red', 'blue', 'green'])
 bounds = [-0.5,0.5,1.5,2.5,3.5]
