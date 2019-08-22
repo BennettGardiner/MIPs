@@ -1,5 +1,5 @@
 # Solves the diet problem using linear programming -
-# Given a list of n different foods, their costs and
+# given a list of n different foods, their costs and
 # the amounts of m different nutrients in those foods,
 # determine the cheapest diet satisfying a list of
 # nutrional requirements.
