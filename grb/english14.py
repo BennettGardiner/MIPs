@@ -26,17 +26,21 @@ for line in eng_data:
     words.append(word)
     values.append(value)
     WordIn[count] = m.addVar(vtype = GRB.BINARY) # Word variables
+    
     # Find unique leters in word and convert to their variable numbers
     letters = set()
     letter_sigs = []
     for k in range(len(word)):
         letters.add(word[k])
         letter_sigs.append(ord(word[k]) - 96 - 1)
+        
     # Constraint to link word and its unique letters (tight constraint)
     for n in range(len(letter_sigs)):
         m.addConstr(WordIn[count] <= LetterIn[letter_sigs[n]])
+        
     # Constraint to link word and its unique letters (looser constraint)
     # m.addConstr(WordIn[count] * len(letter_sigs) <= quicksum([LetterIn[letter_sigs[k]] for k in range(len(letter_sigs))]))
+    
     count += 1
 
 # Objective function
