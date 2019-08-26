@@ -1,3 +1,4 @@
+# Problem is here http://www.academis.eu/posts/bricks_linear_equations
 # This takes about 30 seconds to run.
 
 bricks = ['a1', 'a2', 'a3',
