@@ -1,3 +1,10 @@
+# A company has the ability to make some number of clothing items (with each 
+# item costing labour and cloth, as well as a dollar amount to make) which can
+# be sold to the public. There is a limited number of hours of labour and square
+# meterage of cloth, and it costs some amount to rent the individual machine which 
+# produces each item (this is a once off cost). What should the company's manufacturing
+# strategy entail?
+
 from pulp import *
 
 item_list = ["Shirts", "Shorts", "Pants"]
@@ -47,7 +54,7 @@ problem += lpSum(profit_list[i] * v[i] for i in range(num_items)) \
 
 print(problem)
 
-# solving
+# Solving
 problem.solve()
 
 print("ClothCo should make")
