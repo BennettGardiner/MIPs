@@ -19,11 +19,10 @@ for i in range(0,n):
 
 # There are n queens
 m.addConstr(quicksum(X[row, col] for row in range(0, n) for col in range(0, n)) == n)
-print(m)
+
 # There is only one queen in each row
 for row in range(0,n):
     m.addConstr(quicksum(X[row, col] for col in range(0,n)) == 1)
-    print(m)
 
 # There is only one queen in each column
 for col in range(0,n):
