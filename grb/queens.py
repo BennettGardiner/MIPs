@@ -8,6 +8,7 @@ m = Model("Queens")
 
 # Data
 n = 8 # n >= 4
+RESTRICT = False # todo create a loop to give all possible solns
 
 # Add variables
 X={}
@@ -39,6 +40,29 @@ for k in range(n - 2, -1, -1):
     m.addConstr(quicksum(X[row, row - k] for row in range(k, n)) <= 1)
 for r in range(1, n -1):
     m.addConstr(quicksum(X[row, row + r] for row in range(n - r)) <= 1)
+
+# Restrict a particular solution
+if n == 8 and RESTRICT == True:
+    data = [
+    [' ', ' ', ' ', 'Q', ' ', ' ', ' ', ' '],
+    [' ', 'Q', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', 'Q', ' '],
+    [' ', ' ', 'Q', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', 'Q', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'Q'],
+    ['Q', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', 'Q', ' ', ' ', ' ']
+    ]
+
+    row_index = []
+    col_index = []
+    for i in range(0, n):
+        for col in range(0, n):
+            if data[row][col] == 'Q':
+                row_index.append(row)
+                col_index.append(col)
+
+    m.addConstr(quicksum(X[row, col] for row in row_index for col in col_index) <= n)
 
 # No objective necessary
 m.setObjective(1, GRB.MAXIMIZE)
