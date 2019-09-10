@@ -7,14 +7,14 @@ from gurobipy import *
 m = Model("Queens")
 
 # Data
-n = 8  # n >= 4
-RESTRICT = False  # todo create a loop to give all possible solns
+n = 6  # n >= 4
+RESTRICT = True  # todo create a loop to give all possible solns
 
 # Add variables
 X = {}
-for i in range(0, n):
-    for j in range(0, n):
-        X[i, j] = m.addVar(vtype=GRB.BINARY)  # Is there a queen on row i, col j?
+for row in range(0, n):
+    for col in range(0, n):
+        X[row, col] = m.addVar(vtype=GRB.BINARY)  # Is there a queen on row, col?
 
 # Add the constraints
 
@@ -73,13 +73,13 @@ for row in range(0, n):
 for col in range(0, n):
     m.addConstr(quicksum(X[row, col] for row in range(0, n)) == 1)
 
-# There is only one queen on each diagonal (/)
+# There is a maximum of one queen on each diagonal (/)
 for k in range(1, n):
     m.addConstr(quicksum(X[row, k - row] for row in range(k, -1, -1)) <= 1)
 for r in range(1, n - 1):
     m.addConstr(quicksum(X[row, r + n - row - 1] for row in range(n - 1, r - 1, -1)) <= 1)
 
-# There is only one queen on each diagonal (\)
+# There is a maximum of one queen on each diagonal (\)
 for k in range(n - 2, -1, -1):
     m.addConstr(quicksum(X[row, row - k] for row in range(k, n)) <= 1)
 for r in range(1, n - 1):
