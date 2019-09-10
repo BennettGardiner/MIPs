@@ -1,7 +1,6 @@
 # This problem is the classic set covering problem - given a set of
 # towns, minimize the number of fire stations if each town must be
 # covered by at least one station.
-
 from gurobipy import *
 
 # Problem setup
