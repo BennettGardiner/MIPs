@@ -1,12 +1,12 @@
 # Plots the solutions in the queensNsoln.txt files
 import ast
 
-n = 7
+n = 4
 
-f = open(f"queens{n}plots.txt", "w+")
+f = open(f"QueenSolns/queens{n}plots.txt", "w+")
 f.close()
 
-with open(f"queens{n}solns.txt", "r+") as f:
+with open(f"QueenSolns/queens{n}solns.txt", "r+") as f:
     lines = f.read().splitlines()
     count = 1
     for line in lines:
@@ -20,7 +20,7 @@ with open(f"queens{n}solns.txt", "r+") as f:
             col = line[k][1]
             line_str += '|' + ' .' * col + ' Q' + ' .' * (n - col - 1) + ' |\n'
 
-        with open(f"queens{n}plots.txt", "a+") as f:
+        with open(f"QueenSolns/queens{n}plots.txt", "a+") as f:
             f.write(board_top + line_str + board_bot + '\n')
 
         count += 1

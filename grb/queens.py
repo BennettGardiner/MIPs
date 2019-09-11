@@ -6,11 +6,11 @@ import ast
 import os
 
 # Data
-n = 7  # n >= 4
+n = 4  # n >= 4
 LOOP = True
 
 if LOOP:
-    with open(f"queens{n}solns.txt", "w+") as   f:
+    with open(f"QueenSolns/queens{n}solns.txt", "w+") as   f:
         f.truncate()
 
 # Problem initiate and setup
@@ -54,8 +54,8 @@ count = 0
 while True:
     try:
         # Restrict particular solutions   # todo rewrite to only get fundamental solutions
-        with open(f"queens{n}solns.txt", "r+") as f:
-            if LOOP and os.path.getsize(f"queens{n}solns.txt") > 0:
+        with open(f"QueenSolns/queens{n}solns.txt", "r+") as f:
+            if LOOP and os.path.getsize(f"QueenSolns/queens{n}solns.txt") > 0:
                 lines = f.read().splitlines()
                 data = lines[-1].rstrip()
                 data = ast.literal_eval(data)
@@ -82,7 +82,7 @@ while True:
         print(q_locs)
 
         if LOOP:
-            with open(f"queens{n}solns.txt", "a+") as f:
+            with open(f"QueenSolns/queens{n}solns.txt", "a+") as f:
                 f.write(str(q_locs) + '\n')
     except: # todo find the actual gurobi error code for infeasibility
         break
