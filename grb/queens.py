@@ -2,65 +2,27 @@
 # attacking chess queens on a nxn board
 
 from gurobipy import *
+import ast
+import os
+
+# Data
+n = 7  # n >= 4
+LOOP = True
+
+if LOOP:
+    with open(f"queens{n}solns.txt", "w+") as   f:
+        f.truncate()
 
 # Problem initiate and setup
 m = Model("Queens")
-
-# Data
-n = 6  # n >= 4
-RESTRICT = True  # todo create a loop to give all possible solns
+X = {}
 
 # Add variables
-X = {}
 for row in range(0, n):
     for col in range(0, n):
         X[row, col] = m.addVar(vtype=GRB.BINARY)  # Is there a queen on row, col?
 
 # Add the constraints
-
-# Restrict particular solutions
-if RESTRICT == True and n == 8:
-    data = [
-    [' ', ' ', ' ', 'Q', ' ', ' ', ' ', ' '],
-    [' ', 'Q', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', 'Q', ' '],
-    [' ', ' ', 'Q', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', 'Q', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'Q'],
-    ['Q', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', 'Q', ' ', ' ', ' ']
-    ]
-
-    row_index = []
-    col_index = []
-    for row in range(0, n):
-        for col in range(0, n):
-            if data[row][col] == 'Q':
-                row_index.append(row)
-                col_index.append(col)
-
-    m.addConstr(quicksum(X[row_index[i], col_index[i]] for i in range(len(row_index))) <= n - 1)
-
-    data = [
-    [' ', ' ', ' ', ' ', 'Q', ' ', ' ', ' '],
-    [' ', 'Q', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', 'Q', ' ', ' '],
-    ['Q', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', 'Q', ' '],
-    [' ', ' ', ' ', 'Q', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'Q'],
-    [' ', ' ', 'Q', ' ', ' ', ' ', ' ', ' ']
-    ]
-
-    row_index = []
-    col_index = []
-    for row in range(0, n):
-        for col in range(0, n):
-            if data[row][col] == 'Q':
-                row_index.append(row)
-                col_index.append(col)
-
-    m.addConstr(quicksum(X[row_index[i], col_index[i]] for i in range(len(row_index))) <= n - 1)
 
 # There are n queens
 m.addConstr(quicksum(X[row, col] for row in range(0, n) for col in range(0, n)) == n)
@@ -88,9 +50,42 @@ for r in range(1, n - 1):
 # No objective necessary
 m.setObjective(1, GRB.MAXIMIZE)
 
-# Optimize
-m.optimize()
+count = 0
+while True:
+    try:
+        # Restrict particular solutions   # todo rewrite to only get fundamental solutions
+        with open(f"queens{n}solns.txt", "r+") as f:
+            if LOOP and os.path.getsize(f"queens{n}solns.txt") > 0:
+                lines = f.read().splitlines()
+                data = lines[-1].rstrip()
+                data = ast.literal_eval(data)
 
-# Print answer
-for i in range(n):
-    print(["Q" if X[i, j].x == 1.0 else " " for j in range(n)])
+                row_index = []
+                col_index = []
+                for k in range(0, n):
+                    row_index.append(data[k][0])
+                    col_index.append(data[k][1])
+
+                m.addConstr(quicksum(X[row_index[i], col_index[i]] for i in range(len(row_index))) <= n - 1)
+                count += 1
+                print(count)
+
+        # Optimize
+        m.optimize()
+
+        # Record answer
+        q_locs = []
+        for row in range(n):
+            for col in range(n):
+                if X[row, col].x == 1.0:
+                    q_locs.append([row, col])
+        print(q_locs)
+
+        if LOOP:
+            with open(f"queens{n}solns.txt", "a+") as f:
+                f.write(str(q_locs) + '\n')
+    except: # todo find the actual gurobi error code for infeasibility
+        break
+    finally:
+        print(f"{count} solutions found for n = {n}")
+
