@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="bert" showNewOnTargetInSync="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="bennett_gardiner@bert:22" showNewOnTargetInSync="false">
     <serverData>
-      <paths name="bert">
+      <paths name="bennett_gardiner@bert:22">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/bennett_gardiner/temp/grb" local="$PROJECT_DIR$" />
+            <mapping deploy="/tmp/pycharm_project_295" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>
