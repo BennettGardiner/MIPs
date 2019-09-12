@@ -1,15 +1,11 @@
 # How many points can fit on an nxn grid if no three points are co-linear?
-# import matplotlib
-# matplotlib.use('tkagg')
-# import matplotlib.pyplot as plt
-# plt.plot([1,2,3])
-# plt.show()
+# todo currently this only does horizontal, vertical, diagonal lines :(
 from gurobipy import *
 import sys, time
 start = time.time()
-#
+
 # Data
-n = 1500
+n = 15
 
 # Problem initiate and setup
 m = Model("NoThree")
