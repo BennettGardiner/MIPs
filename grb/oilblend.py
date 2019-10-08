@@ -47,12 +47,12 @@ for month in range(len(Months)):
 # Storage constraints
 for oil in range(len(Oils)):
     m.addConstr(S[oil, 0] == 500 + X[oil, 0] - Y[oil, 0])
-    #m.addConstr(S[oil, len(Months) - 1] >= 200)  # optional ending constraint
+    #m.addConstr(S[oil, len(Months) - 1] >= 500)  # optional ending constraint
 for oil in range(len(Oils)):
     for month in range(1, len(Months)):
         m.addConstr(S[oil, month] == S[oil, month - 1] + X[oil, month] - Y[oil, month])
         m.addConstr(S[oil, month] <= 1000)
-        m.addConstr(S[oil, month] >= 200)  # optional made up constraint
+        #m.addConstr(S[oil, month] >= 500)  # optional made up constraint
 
 # Optimize
 m.optimize()
