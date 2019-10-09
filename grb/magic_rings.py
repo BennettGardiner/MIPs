@@ -1,14 +1,15 @@
 """Solves Euler problem 68 using linear programming in Gurobi for a k-gon ring"""
-
+# todo fix this so it works for 10 cells
 from gurobipy import *
 
 # Problem initiate and setup
 m = Model("MagicRings")
 
 # Data
-k = 3
-n = 2 * k
-positions = range(3)
+k = 4  # For a k-gon
+n = 2 * k  # Number of cells (Two rings of k)
+N = 3 * k  # Number of digits
+positions = range(k)
 digits = range(1, n + 1)
 
 # Add variables
@@ -20,34 +21,22 @@ for pos in positions:
         Inner[pos, dig] = m.addVar(vtype=GRB.BINARY)
 
 # Set objective
-m.setObjective(quicksum(d * Outer[0, d] * 10**8 +
-                        d * Inner[0, d] * 10**7 +
-                        d * Inner[1, d] * 10**6 +
-                        d * Outer[1, d] * 10**5 +
-                        d * Inner[1, d] * 10**4 +
-                        d * Inner[2, d] * 10**3 +
-                        d * Outer[2, d] * 10**2 +
-                        d * Inner[2, d] * 10**1 +
-                        d * Inner[0, d] * 10**0
-                        for d in digits), GRB.MAXIMIZE)
+m.setObjective(quicksum(d * Outer[incr, d] * 10 ** (N - 1 - 3 * incr) +
+                        d * Inner[incr, d] * 10 ** (N - 2 - 3 * incr) +
+                        d * Inner[(incr + 1) % k, d] * 10 ** (N - 3 - 3 * incr) for d in digits for incr in range(k)), GRB.MAXIMIZE)
 
 # Add the constraints
 
-# Equality constraint a == b == c == a
-m.addConstr(quicksum(d * Outer[0, d] +
-                     d * Inner[0, d] +
-                     d * Inner[1, d] for d in digits) ==
-            quicksum(d * Outer[1, d] +
-                     d * Inner[1, d] +
-                     d * Inner[2, d] for d in digits) ==
-            quicksum(d * Outer[2, d] +
-                     d * Inner[2, d] +
-                     d * Inner[0, d] for d in digits) ==
-            quicksum(d * Outer[0, d] +
-                     d * Inner[0, d] +
-                     d * Inner[1, d] for d in digits))
+# Equality constraint a == b, b == c, ..., f = g
+for pos in positions:
+    m.addConstr(quicksum(d * Outer[pos % k, d] +
+                         d * Inner[pos % k, d] +
+                         d * Inner[(pos + 1) % k, d] for d in digits) ==
+                quicksum(d * Outer[(pos + 1) % k, d] +
+                         d * Inner[(pos + 1) % k, d] +
+                         d * Inner[(pos + 2) % k, d] for d in digits))
 
-# Use each position once
+# Use each position at most once
 for pos in positions:
     m.addConstr(quicksum(Outer[pos, dig] for dig in digits) <= 1)
     m.addConstr(quicksum(Inner[pos, dig] for dig in digits) <= 1)
@@ -58,8 +47,12 @@ for dig in digits:
                 quicksum(Inner[pos, dig] for pos in positions) == 1)
 
 # Start with smallest outer digit
-m.addConstr(quicksum(d * Outer[0, d] for d in digits) <= quicksum(d * Outer[1, d] for d in digits))
-m.addConstr(quicksum(d * Outer[0, d] for d in digits) <= quicksum(d * Outer[2, d] for d in digits))
+for pos in positions:
+    m.addConstr(quicksum(d * Outer[0, d] for d in digits) <= quicksum(d * Outer[pos, d] for d in digits))
+
+# 10 must be in the outer loop
+if 10 in positions:
+    m.addConstr(quicksum(Inner[pos, 10] for pos in positions)  == 0)
 
 # Optimise
 m.optimize()
