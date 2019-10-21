@@ -1,12 +1,12 @@
 """Solves Euler problem 68 using linear programming in Gurobi for a k-gon ring"""
-# todo fix this so it works for 10 cells
+# Note: Currently compute in powers of 11: convert to base 11 to get the true answer
 from gurobipy import *
 
 # Problem initiate and setup
 m = Model("MagicRings")
 
 # Data
-k = 4  # For a k-gon
+k = 5  # For a k-gon
 n = 2 * k  # Number of cells (Two rings of k)
 N = 3 * k  # Number of digits
 positions = range(k)
@@ -17,13 +17,13 @@ Outer = {}  # Outer ring
 Inner = {}  # Inner ring
 for pos in positions:
     for dig in digits:
-        Outer[pos, dig] = m.addVar(vtype=GRB.BINARY)
-        Inner[pos, dig] = m.addVar(vtype=GRB.BINARY)
+        Outer[pos, dig] = m.addVar(vtype=GRB.BINARY)  # Is the number in the outer ring
+        Inner[pos, dig] = m.addVar(vtype=GRB.BINARY)  # Is the number in the inner ring
 
 # Set objective
-m.setObjective(quicksum(d * Outer[incr, d] * 10 ** (N - 1 - 3 * incr) +
-                        d * Inner[incr, d] * 10 ** (N - 2 - 3 * incr) +
-                        d * Inner[(incr + 1) % k, d] * 10 ** (N - 3 - 3 * incr) for d in digits for incr in range(k)), GRB.MAXIMIZE)
+m.setObjective(quicksum(d * Outer[incr, d] * (n+1) ** (N - 1 - 3 * incr) +
+                        d * Inner[incr, d] * (n+1) ** (N - 2 - 3 * incr) +
+                        d * Inner[(incr + 1) % k, d] * (n+1) ** (N - 3 - 3 * incr) for d in digits for incr in range(k)), GRB.MAXIMIZE)
 
 # Add the constraints
 
@@ -51,8 +51,8 @@ for pos in positions:
     m.addConstr(quicksum(d * Outer[0, d] for d in digits) <= quicksum(d * Outer[pos, d] for d in digits))
 
 # 10 must be in the outer loop
-if 10 in positions:
-    m.addConstr(quicksum(Inner[pos, 10] for pos in positions)  == 0)
+# if 10 in positions:
+    #m.addConstr(quicksum(Inner[pos, 10] for pos in positions) == 0)
 
 # Optimise
 m.optimize()
