@@ -74,3 +74,22 @@ for colour in range(num_planets):
         if Y[connection[0], connection[1], colour].x == 1:
             print(f"There is a bomb on connection {connection[0]} to "
                   f"{connection[1]}")
+
+# Position 1 is Blue
+# Position 2 is Red
+# Position 3 is Blue
+# Position 4 is Purple
+# Position 5 is Green
+# Position 6 is Green
+# Position 7 is Purple
+# Position 8 is Pink
+# Position 9 is Blue
+# Position 10 is Blue
+# Position 11 is Blue
+# Position 12 is Pink
+# Position 13 is Red
+# Position 14 is Pink
+# Position 15 is Green
+# There is a bomb on connection 9 to 10
+# There is a bomb on connection 10 to 11
+# There is a bomb on connection 5 to 6
