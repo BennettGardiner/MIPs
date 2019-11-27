@@ -39,15 +39,13 @@ m.addConstr(A[1, 2] >= 3 * A[2, 2] / 2)
 # Oil usage constraint
 m.addConstr(A[2, 1] + A[2, 2] <= 1000)
 m.addConstr(A[1, 1] + A[1, 2]
-            <= 500 + U[1]*X[1] + U[2]*X[2] + U[3]*X[3])
+            <= 500 + X[1] + X[2] + X[3])
 
-# Order constraint
-m.addConstr(U[1] >= U[2])
-m.addConstr(U[2] >= U[3])
-
-# Linking constraints
+# Linking and order constraints
 m.addConstr(U[1] <= X[1]/500)
+m.addConstr(U[1] >= X[2]/500)
 m.addConstr(U[2] <= X[2]/500)
+m.addConstr(U[2] >= X[3]/500)
 m.addConstr(U[3] <= X[3]/500)
 
 # Optimize
