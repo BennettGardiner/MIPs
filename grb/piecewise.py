@@ -3,7 +3,7 @@
 from gurobipy import *
 
 # Problem initiate and setup
-m = Model("Insert model name here")
+m = Model("PWL")
 
 # Data
 # Insert problem specific data here
