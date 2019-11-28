@@ -11,7 +11,7 @@ m = Model("PWL")
 # Add variables
 
 # Amounts of each oil
-A = {(oil, blend): m.addVar(vtype=GRB.CONTINUOUS, lb=0)
+A = {(oil, blend): m.addVar(vtype=GRB.CONTINUOUS)
      for oil in range(1, 3)
      for blend in range(1, 3)}
 
@@ -19,7 +19,7 @@ A = {(oil, blend): m.addVar(vtype=GRB.CONTINUOUS, lb=0)
 U = {level: m.addVar(vtype=GRB.BINARY)
      for level in range(1, 4)}
 
-# Amounts bought
+# Amounts bought in each price level
 X = {level: m.addVar(vtype=GRB.CONTINUOUS, ub=500)
      for level in range(1, 4)}
 
@@ -34,7 +34,7 @@ m.setObjective(1.2 * (A[1, 1] + A[2, 1])
 
 # Blending percentage constraints
 m.addConstr(A[1, 1] >= A[2, 1])
-m.addConstr(A[1, 2] >= 3 * A[2, 2] / 2)
+m.addConstr(A[1, 2] >= 1.5 * A[2, 2])
 
 # Oil usage constraint
 m.addConstr(A[2, 1] + A[2, 2] <= 1000)
@@ -53,6 +53,8 @@ m.optimize()
 
 # Print answer
 print("Objective value is", m.objVal)
-print(U[1].x, U[2].x, U[3].x, '\n',
-      X[1].x, X[2].x, X[3].x, '\n',
-      A[1, 1].x, A[2, 1].x, A[1, 2].x, A[2, 2].x)
+print("Buy", X[1].x, "at $2.5, then",
+      X[2].x, "at $2, then",
+      X[3].x, "at $1.5,\nto produce",
+      A[1, 1].x + A[2, 1].x, "litres of Blend 1, and",
+      A[1, 2].x + A[2, 2].x, "litres of Blend 2.")
