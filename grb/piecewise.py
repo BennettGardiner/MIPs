@@ -42,11 +42,11 @@ m.addConstr(A[1, 1] + A[1, 2]
             <= 500 + X[1] + X[2] + X[3])
 
 # Linking and order constraints
-m.addConstr(U[1] <= X[1]/500)
-m.addConstr(U[1] >= X[2]/500)
-m.addConstr(U[2] <= X[2]/500)
-m.addConstr(U[2] >= X[3]/500)
-m.addConstr(U[3] <= X[3]/500)
+m.addConstr(U[1] <= X[1] / 500)
+m.addConstr(U[1] >= X[2] / 500)
+m.addConstr(U[2] <= X[2] / 500)
+m.addConstr(U[2] >= X[3] / 500)
+m.addConstr(U[3] <= X[3] / 500)
 
 # Optimize
 m.optimize()
@@ -54,5 +54,5 @@ m.optimize()
 # Print answer
 print("Objective value is", m.objVal)
 print(U[1].x, U[2].x, U[3].x, '\n',
-    X[1].x, X[2].x, X[3].x, '\n',
-      A[1,1].x, A[2,1].x, A[1,2].x, A[2,2].x)
+      X[1].x, X[2].x, X[3].x, '\n',
+      A[1, 1].x, A[2, 1].x, A[1, 2].x, A[2, 2].x)
